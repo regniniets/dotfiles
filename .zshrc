@@ -78,6 +78,12 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
+bindkey '\e[H' beginning-of-line
+bindkey '\e[F' end-of-line
+
+bindkey '^R' history-incremental-search-backward
+bindkey '^S' history-incremental-search-forward
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
