@@ -78,11 +78,55 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
+#key bindings
+bindkey -e
+typeset -g -A key
 bindkey '\e[H' beginning-of-line
 bindkey '\e[F' end-of-line
+bindkey '\e[A' up-line-or-search
+bindkey '\e[B' down-line-or-search
 
 bindkey '^R' history-incremental-search-backward
 bindkey '^S' history-incremental-search-forward
+
+#path
+typeset -u path
+path=(~/.local/bin ~/bin $path[@])
+
+#window title
+case $TERM in
+  termite|*xterm*|rxvt|rxvt-unicode|rxvt-256color|rxvt-unicode-256color|(dt|k|E)term)
+    precmd () {
+      #vcs_info
+      print -Pn "\e]0;[%n@%M][%~]%#\a"
+    } 
+    preexec () { print -Pn "\e]0;[%n@%M][%~]%# ($1)\a" }
+    ;;
+  screen|screen-256color)
+    precmd () { 
+      #vcs_info
+      print -Pn "\e]83;title \"$1\"\a" 
+      print -Pn "\e]0;$TERM - (%L) [%n@%M]%# [%~]\a" 
+    }
+    preexec () { 
+      print -Pn "\e]83;title \"$1\"\a" 
+      print -Pn "\e]0;$TERM - (%L) [%n@%M]%# [%~] ($1)\a" 
+    }
+    ;; 
+esac
+
+#colored man pages
+man() {
+  env \
+    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+    LESS_TERMCAP_md=$(printf "\e[1;31m") \
+    LESS_TERMCAP_me=$(printf "\e[0m") \
+    LESS_TERMCAP_se=$(printf "\e[0m") \
+    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+    LESS_TERMCAP_ue=$(printf "\e[0m") \
+    LESS_TERMCAP_us=$(printf "\e[1;32m") \
+    man "$@"
+}
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
