@@ -1,6 +1,6 @@
-autoload -U path
-path=($HOME/bin $HOME/bin/apache-maven/bin $HOME/.cargo/bin $path[@])
-export path
+typeset -U PATH path
+path=("$HOME/bin" "$HOME/bin/apache-maven/bin" "$HOME/.cargo/bin" "$path[@]")
+export PATH
 
 export EDITOR=nvim
 export PAGER=less
