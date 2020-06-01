@@ -11,6 +11,14 @@ TIMEFMT='%J   %U  user %S system %P cpu %*E total'$'\n'\
 'page faults from disk:     %F'$'\n'\
 'other page faults:         %R'
 
+if hash vim; then
+    EDITOR=${EDITOR:-vim}
+else
+    EDITOR=${EDITOR:-vi}
+fi
+export PAGER=${PAGER:-less}
+
+
 #install (if necessary) and load zplug
 if [[ -z "$ZPLUG_HOME" ]]; then
   ZPLUG_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zplug"
@@ -92,6 +100,14 @@ alias ls='ls --color=auto -F ' # in color & with classifiers
 alias la='ls -lah --color=auto '
 alias lh='ls -lh --color=auto '
 alias ip='ip -c '
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+
 alias tree='tree -F ' # with classifiers
 alias datea="date +%F"
 alias glog="git log --graph --pretty=format:'%Cred%h%Creset %an: %s - %Creset %C(yellow)%d%Creset %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
@@ -105,5 +121,8 @@ weather() {
 if [[ -a ~/.zshrc.local ]]; then
   source ~/.zshrc.local
 fi
+
+# automatically remove duplicates from these arrays
+typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 
 # vim: et:sw=2
